@@ -1,9 +1,8 @@
 <div align="center" height="256" width="256">
-    <h1>PinnacleQt_GUI_PySide6_PyQt6</h1>
+    <h1>Lansus_PySide_Project_Template</h1>
 <br>
 <img alt="Python 3.12.0" src="https://img.shields.io/badge/Python-3.12.0-informational?style=flat&logo=python&logoColor=white&color=3776AB"/>
 <img alt="PySide6" src="https://img.shields.io/badge/PySide6-Compatible-informational?style=flat&logo=qt&logoColor=white&color=41CD52"/>
-<img alt="PyQt6" src="https://img.shields.io/badge/PyQt6-Compatible-informational?style=flat&logo=qt&logoColor=white&color=41CD52"/>
 <img alt="License" src="https://img.shields.io/badge/license-MIT-green?style=flat&logo=opensourceinitiative&logoColor=white"/>
 
 
@@ -23,7 +22,6 @@
 - [特性](#特性)
 - [项目结构](#项目结构)
 - [二次开发](#二次开发)
-- [联系作者](#联系作者)
 - [致谢](#致谢)
 - [许可证](#许可证)
 
@@ -34,27 +32,26 @@
 
 快速启动本项目，只需几个简单步骤：
 
-1. **克隆仓库**：
+1. **下载uv**
    ```bash
-   git clone https://github.com/Frica01/PinnacleQt_GUI_PySide6_PyQt6.git
-   ```
-2. **安装依赖**：
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. **运行应用**：
-   ```bash
-   python main.py
+   # Windows 平台
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   # Linux / MacOS 平台
+   curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
-
-## 🌟支持项目
-
-如果您觉得这个项目有用，不妨给它一个⭐️（`Star`）。`Star`对我来说是一种鼓励，也能帮助更多的开发者发现这个工具。
-
-如果您希望跟踪最新的更新和改进，请`Fork`🍴本项目。`Fork`可以让您保持对项目更新的同步，并有机会贡献自己的改进和新功能。
-
-
+2. **克隆仓库**：
+   ```bash
+   git clone https://github.com/Lansus-Filter/Lansus_PySide_Project_Template.git
+   ```
+3. **安装依赖**：
+   ```bash
+   uv sync
+   ```
+4. **运行应用**：
+   ```bash
+   uv run main.py
+   ```
 
 
 
@@ -157,21 +154,14 @@ PinnacleQt_GUI_PySide6_PyQt6/
 通过上述步骤，您可以轻松扩展现有的功能或为应用添加全新的特性。
 
 
-## ✉️联系作者
-如果您有任何问题或者想要更多地了解项目，欢迎通过以下方式联系我：
-- 微信公众号：小菜的Python杂货铺 [扫码关注公众号](./assets/WeChat_Official_Account.jpg)
-- QQ群聊：[扫码加入群聊](./assets/QQ_group.png)
-- 在GitHub上 [提交Issue](https://github.com/Frica01/PinnacleQt_GUI_PySide6_PyQt6/issues)
-
-
 ## 致谢
 
 本项目的灵感来源于 [Wanderson-Magalhaes](https://github.com/Wanderson-Magalhaes) 的创意和贡献。我对他在开源社区的工作表示由衷的敬意和感谢。
-本项目基于以下两个项目的重构版本。
+本项目基于以下三个项目的重构版本。
 
 - [Modern_GUI_PyDracula_PySide6_or_PyQt6](https://github.com/Wanderson-Magalhaes/Modern_GUI_PyDracula_PySide6_or_PyQt6)
 - [PyBlackBox_Qt_Widgets_PySide6_Or_PyQt6_v1.0.0](https://github.com/Wanderson-Magalhaes/PyBlackBox_Qt_Widgets_PySide6_Or_PyQt6_v1.0.0)
-
+- [PinnacleQt_GUI_PySide6_PyQt6](https://github.com/Lansus-Filter/Lansus_PySide_Project_Template#)
 
 
 ## 许可证
