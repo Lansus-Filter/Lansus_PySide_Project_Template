@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-# Name:         ui_setup.py
-# Author:       小菜
-# Date:         2024/4/01 00:00
-# Description:  一些ui公共方法
 
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import (QGraphicsDropShadowEffect, QWidget)
+from PySide6.QtWidgets import QGraphicsDropShadowEffect
+from PySide6.QtWidgets import QWidget as QWidget
 
 
-def apply_shadow_effect(widget, blur_radius=10, x_offset=0, y_offset=0, color=(0, 0, 0, 150)):
+def apply_shadow_effect(
+    widget, blur_radius=10, x_offset=0, y_offset=0, color=(0, 0, 0, 150)
+):
     """为指定的小部件应用阴影效果。
 
     Args:

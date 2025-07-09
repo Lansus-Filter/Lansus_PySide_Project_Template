@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-# Name:         __init__.py.py
-# Author:       小菜
-# Date:         2024/4/01 00:00
-# Description:
 
+import sys
+from pathlib import Path
+sys.path.append(Path(__file__).resolve().parent.as_posix())
 
-from views.ui_designs.ui_main import Ui_MainWindow
-from views.ui_designs.ui_login import Ui_Login
+from views.ui_designs.ui_main import Ui_MainWindow as Ui_MainWindow
+from views.ui_designs.ui_login import Ui_Login as Ui_Login

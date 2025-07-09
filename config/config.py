@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-# Name:         config.py
-# Author:       小菜
-# Date:         2024/3/22 15:19
-# Description:
 
 
 class DarkConfig:
-    QSS_FILE = 'views/resources/themes/py_dracula_dark.qss'
+    QSS_FILE = "views/resources/themes/py_dracula_dark.qss"
 
     # BTNS LEFT AND RIGHT BOX COLORS
     BTN_LEFT_BOX_COLOR = "background-color: rgb(44, 49, 58);"
@@ -20,15 +16,15 @@ class DarkConfig:
 
     # MANUAL STYLES
     MANUAL_STYLES = {
-        'lineEdit': "background-color: rgb(33, 37, 43);",
-        'pushButton': "background-color: rgb(52, 59, 72);",
-        'plainTextEdit': "background-color: rgb(33, 37, 43);",
-        'tableWidget': "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
-        'scrollArea': "QScrollBar:vertical {background: rgb(52, 59, 72);} QScrollBar:horizontal {background: rgb(52, 59, 72);}",
-        'comboBox': "background-color: rgb(33, 37, 43);",
-        'horizontalScrollBar': "background: rgb(52, 59, 72);",
-        'verticalScrollBar': "background: rgb(52, 59, 72);",
-        'commandLinkButton': "color: rgb(255, 121, 198);",
+        "lineEdit": "background-color: rgb(33, 37, 43);",
+        "pushButton": "background-color: rgb(52, 59, 72);",
+        "plainTextEdit": "background-color: rgb(33, 37, 43);",
+        "tableWidget": "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
+        "scrollArea": "QScrollBar:vertical {background: rgb(52, 59, 72);} QScrollBar:horizontal {background: rgb(52, 59, 72);}",
+        "comboBox": "background-color: rgb(33, 37, 43);",
+        "horizontalScrollBar": "background: rgb(52, 59, 72);",
+        "verticalScrollBar": "background: rgb(52, 59, 72);",
+        "commandLinkButton": "color: rgb(255, 121, 198);",
     }
 
     # APP SETTINGS
@@ -40,7 +36,7 @@ class DarkConfig:
 
 
 class LightConfig:
-    QSS_FILE = 'views/resources/themes/py_dracula_light.qss'
+    QSS_FILE = "views/resources/themes/py_dracula_light.qss"
 
     # BTNS LEFT AND RIGHT BOX COLORS
     BTN_LEFT_BOX_COLOR = "background-color: #495474;"
@@ -54,15 +50,15 @@ class LightConfig:
 
     # MANUAL STYLES
     MANUAL_STYLES = {
-        'lineEdit': "background-color: #6272a4;",
-        'pushButton': "background-color: #6272a4;",
-        'plainTextEdit': "background-color: #6272a4;",
-        'tableWidget': "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
-        'scrollArea': "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
-        'comboBox': "background-color: #6272a4;",
-        'horizontalScrollBar': "background-color: #6272a4;",
-        'verticalScrollBar': "background-color: #6272a4;",
-        'commandLinkButton': "color: #ff79c6;"
+        "lineEdit": "background-color: #6272a4;",
+        "pushButton": "background-color: #6272a4;",
+        "plainTextEdit": "background-color: #6272a4;",
+        "tableWidget": "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
+        "scrollArea": "QScrollBar:vertical { background: #6272a4; } QScrollBar:horizontal { background: #6272a4; }",
+        "comboBox": "background-color: #6272a4;",
+        "horizontalScrollBar": "background-color: #6272a4;",
+        "verticalScrollBar": "background-color: #6272a4;",
+        "commandLinkButton": "color: #ff79c6;",
     }
 
     # APP SETTINGS

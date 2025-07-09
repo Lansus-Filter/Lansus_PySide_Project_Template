@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
-# Name:         view_main.py
-# Author:       小菜
-# Date:         2024/4/01 00:00
-# Description:
 
 
-from PySide6.QtCore import (QObject, Qt)
+from PySide6.QtCore import QObject, Qt
 
-from views import (MainWindow, LoginWindow)
-from views.ui_components import (create_animation_group, create_opacity_animation)
+from views import LoginWindow, MainWindow
+from views.ui_components import create_animation_group, create_opacity_animation
 
 
 class ViewMain(QObject):
@@ -26,7 +22,7 @@ class ViewMain(QObject):
         if animate_on_startup:
             self.login_window = LoginWindow()
             # 设置窗口不显示任务栏
-            self.login_window.setWindowFlag(Qt.Tool)
+            self.login_window.setWindowFlag(Qt.WindowType.Tool)
             # 连接Signal信号，login动画加载完成再运行
             self.login_window.login_successful.connect(self.start_animation)
             #

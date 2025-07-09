@@ -5,14 +5,24 @@
 # Description:
 
 import sys
-from typing import (Tuple, Union)
+from typing import Tuple, Union
 
-from PySide6.QtCore import (Qt, QTimer, QEvent, QPoint, QPropertyAnimation, QParallelAnimationGroup)
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import (QMainWindow, QApplication, QSizeGrip, QPushButton)
+from PySide6.QtCore import (
+    QParallelAnimationGroup,
+    QPoint,
+    QPropertyAnimation,
+    Qt,
+    QTimer,
+)
+from PySide6.QtGui import QIcon, QMouseEvent, QResizeEvent
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QSizeGrip, QWidget
 
-from config import (DarkConfig, LightConfig)
-from views.ui_components import (create_width_animation, create_animation_group, apply_shadow_effect)
+from config import DarkConfig, LightConfig
+from views.ui_components import (
+    apply_shadow_effect,
+    create_animation_group,
+    create_width_animation,
+)
 from views.ui_designs import Ui_MainWindow
 from views.widgets import CustomGrip
 
@@ -24,13 +34,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         #
         self.is_maximum_size: bool = bool(0)
-        self.left_grip: CustomGrip = None
-        self.right_grip: CustomGrip = None
-        self.top_grip: CustomGrip = None
-        self.bottom_grip: CustomGrip = None
-        self.sizegrip: QSizeGrip = None
-        self.animation: QPropertyAnimation = None
-        self.animation_group: QParallelAnimationGroup = None
+        self.left_grip: CustomGrip
+        self.right_grip: CustomGrip
+        self.top_grip: CustomGrip
+        self.bottom_grip: CustomGrip
+        self.sizegrip: QSizeGrip
+        self.animation: QPropertyAnimation
+        self.animation_group: QParallelAnimationGroup
         self.move_position: QPoint = QPoint(0, 0)
         #
         self.dark_theme: bool = bool(1)
@@ -49,22 +59,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         # 清空显性的样式，两个设置按钮 和 菜单选中的按钮
         self.toggle_setting_btn_style()
-        self.toggle_selected_btn_style(is_add=False)
+        self.toggle_selected_btn_style(widget_item=None, is_add=False)
 
         #
         self.config = LightConfig if self.dark_theme else DarkConfig
         self.dark_theme = not self.dark_theme
         # 设置全局的新样式，新主题
         with open(self.config.QSS_FILE, mode='r', encoding='utf-8') as f:
-            self.styleSheet.setStyleSheet(f.read())
+            self.styleSheets.setStyleSheet(f.read())
         # 设置部件的样式
         for widget_name, style in self.config.MANUAL_STYLES.items():
-            widget = getattr(self, widget_name, None)
+            widget: QWidget | None = getattr(self, widget_name, None)
+            if not widget:
+                continue
             widget.setStyleSheet(style)
 
         # 设置当前选中的按钮的颜色
-        btn: QPushButton = self.findChild(QPushButton, self.current_selected_btn)
-        self.stackedWidget.setCurrentWidget(btn)
+        result = self.findChild(QPushButton, self.current_selected_btn)
+        if not result:
+            return
+        btn: QPushButton = result
         self.toggle_selected_btn_style(btn)
 
         # 添加两个设置按钮的颜色，如果有展开的话
@@ -80,9 +94,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #
         self.toggle_selected_btn_style(self.btn_home)
         # 无边框
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
         # 半透明
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
     def setup_connections(self):
         """事件绑定"""
@@ -124,10 +138,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def initialize_border_effects(self):
         """初始化自定义边框并为窗口应用阴影效果。"""
         # 添加窗口阴影和边框
-        self.left_grip = CustomGrip(self, Qt.LeftEdge, True)
-        self.right_grip = CustomGrip(self, Qt.RightEdge, True)
-        self.top_grip = CustomGrip(self, Qt.TopEdge, True)
-        self.bottom_grip = CustomGrip(self, Qt.BottomEdge, True)
+        self.left_grip = CustomGrip(self, Qt.Edge.LeftEdge, True)
+        self.right_grip = CustomGrip(self, Qt.Edge.RightEdge, True)
+        self.top_grip = CustomGrip(self, Qt.Edge.TopEdge, True)
+        self.bottom_grip = CustomGrip(self, Qt.Edge.BottomEdge, True)
 
         # 阴影效果
         apply_shadow_effect(self.bgApp)
@@ -167,7 +181,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.animation.start()
 
     # noinspection PyTypeChecker
-    def toggle_selected_btn_style(self, widget=None, is_add=True):
+    def toggle_selected_btn_style(self, widget_item, is_add=True):
         """清空菜单栏已选择按钮的样式
 
         Args:
@@ -177,8 +191,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Returns:
 
         """
-        if not widget:
-            widget: QPushButton = self.findChild(QPushButton, self.current_selected_btn)
+        if not widget_item:
+            result = self.findChild(QPushButton, self.current_selected_btn)
+            if not result:
+                return
+            widget: QPushButton = result
+        else:
+            widget: QPushButton = widget_item
 
         if is_add:
             widget.setStyleSheet(widget.styleSheet() + self.config.MENU_SELECTED_STYLESHEET)
@@ -220,23 +239,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 先判断是否为添加默认样式
         if add_default_style:
-            self.toggleLeftBox.setStyleSheet(left_style + color_map.get('left')) if left_width else None
-            self.settingsTopBtn.setStyleSheet(right_style + color_map.get('right')) if right_width else None
+            self.toggleLeftBox.setStyleSheet(left_style + color_map['left']) if left_width else None
+            self.settingsTopBtn.setStyleSheet(right_style + color_map['right']) if right_width else None
             return
 
         # 根据当前面板的宽度和方向，调整按钮样式
         if target_left_width and not target_right_width:
             # 展开左侧面板，应用左侧按钮样式，并移除右侧按钮样式
-            self.toggleLeftBox.setStyleSheet(left_style + color_map.get('left'))
-            self.settingsTopBtn.setStyleSheet(right_style.replace(color_map.get('right'), ''))
+            self.toggleLeftBox.setStyleSheet(left_style + color_map['left'])
+            self.settingsTopBtn.setStyleSheet(right_style.replace(color_map['right'], ''))
         elif not target_left_width and target_right_width:
             # 展开右侧面板，应用右侧按钮样式，并移除左侧按钮样式
-            self.toggleLeftBox.setStyleSheet(left_style.replace(color_map.get('left'), ''))
-            self.settingsTopBtn.setStyleSheet(right_style + color_map.get('right'))
+            self.toggleLeftBox.setStyleSheet(left_style.replace(color_map['left'], ''))
+            self.settingsTopBtn.setStyleSheet(right_style + color_map['right'])
         else:
             # 如果没有特定方向，移除触发按钮的样式
-            self.toggleLeftBox.setStyleSheet(left_style.replace(color_map.get('left'), ''))
-            self.settingsTopBtn.setStyleSheet(right_style.replace(color_map.get('right'), ''))
+            self.toggleLeftBox.setStyleSheet(left_style.replace(color_map['left'], ''))
+            self.settingsTopBtn.setStyleSheet(right_style.replace(color_map['right'], ''))
 
         return target_left_width, target_right_width
 
@@ -246,7 +265,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         根据触发器（按钮）的objectName映射到对应的动画方向，计算出左右侧面板的目标宽度，并对相应的按钮样式进行添加或移除。最后，创建并启动包含两个动画的并行动画组。
         """
         # 获取需要移动的目标距离
-        target_left_width, target_right_width = self.toggle_setting_btn_style()
+        target_size = self.toggle_setting_btn_style()
+        if not target_size:
+            return
+        target_left_width, target_right_width = target_size
 
         # 对左右面板执行展开或收起的动画
         left_box = create_width_animation(self.extraLeftBox, target_left_width)
@@ -271,32 +293,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # 切换页面
             QTimer.singleShot(150, lambda: self.stackedWidget.setCurrentWidget(page))
             # 设置未被选中按钮样式
-            self.toggle_selected_btn_style(is_add=False)
+            self.toggle_selected_btn_style(widget_item=None, is_add=False)
             # 设置选中的按钮样式
             self.toggle_selected_btn_style(selected_btn)
             # 记录当前选中的按钮
             self.current_selected_btn = selected_btn_name
         print(f'Button "{selected_btn_name}" pressed!')
 
-    def double_click_maximize_restore(self, event):
+    def double_click_maximize_restore(self, event: QMouseEvent):
         """双击标题控件事件"""
         # IF DOUBLE CLICK CHANGE STATUS
-        if event.type() == QEvent.MouseButtonDblClick:
+        if event.type() == QMouseEvent.Type.MouseButtonDblClick:
             QTimer.singleShot(250, self.maximize_restore)
 
-    def move_window(self, event=None):
+    def move_window(self, event: QMouseEvent):
         """窗口拖动"""
-        if event.buttons() == Qt.LeftButton:
+        if event.buttons() == Qt.MouseButton.LeftButton:
             self.move(event.globalPos() - self.move_position)
             event.accept()
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QMouseEvent):
         """鼠标点击事件"""
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.move_position = event.globalPosition().toPoint() - self.pos()
             event.accept()
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event: QResizeEvent):
         """处理窗口大小调整事件"""
         self.left_grip.setGeometry(0, 10, 10, self.height())
         self.right_grip.setGeometry(self.width() - 10, 10, 10, self.height())

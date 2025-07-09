@@ -1,3 +1,4 @@
+# type: ignore
 # ///////////////////////////////////////////////////////////////
 #
 # BY: WANDERSON M.PIMENTA
@@ -13,9 +14,9 @@
 # https://doc.qt.io/qtforpython/licenses.html
 #
 # ///////////////////////////////////////////////////////////////
-from PySide6.QtCore import Qt, QRect, QSize
+from PySide6.QtCore import QRect, QSize, Qt
 from PySide6.QtGui import QCursor
-from PySide6.QtWidgets import QWidget, QSizeGrip, QFrame, QHBoxLayout
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QSizeGrip, QWidget
 
 
 class CustomGrip(QWidget):
@@ -34,8 +35,8 @@ class CustomGrip(QWidget):
             self.setMaximumHeight(10)
 
             # GRIPS
-            top_left = QSizeGrip(self.wi.top_left)
-            top_right = QSizeGrip(self.wi.top_right)
+            QSizeGrip(self.wi.top_left)
+            QSizeGrip(self.wi.top_right)
 
             # RESIZE TOP
             def resize_top(event):

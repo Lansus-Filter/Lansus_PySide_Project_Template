@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-# Name:         animations.py
-# Author:       小菜
-# Date:         2024/4/01 00:00
-# Description:
 
 from typing import Iterable
 
-from PySide6.QtCore import (QEasingCurve, QPropertyAnimation, QParallelAnimationGroup)
+from PySide6.QtCore import (
+    QByteArray,
+    QEasingCurve,
+    QParallelAnimationGroup,
+    QPropertyAnimation,
+)
 from PySide6.QtWidgets import QWidget
 
 
@@ -22,11 +23,11 @@ def create_width_animation(widget: QWidget, target_width: int, duration=500):
         返回配置好的动画对象(QPropertyAnimation)
 
     """
-    animation = QPropertyAnimation(widget, b"minimumWidth")
+    animation = QPropertyAnimation(widget, QByteArray(b"minimumWidth"))
     animation.setDuration(duration)
     animation.setStartValue(widget.width())
     animation.setEndValue(target_width)
-    animation.setEasingCurve(QEasingCurve.InOutQuart)
+    animation.setEasingCurve(QEasingCurve.Type.InOutQuart)
     return animation
 
 
@@ -44,16 +45,16 @@ def create_opacity_animation(widget: QWidget, target_start, target_end, duration
         返回配置好的动画对象(QPropertyAnimation)
 
     """
-    animation = QPropertyAnimation(widget, b"windowOpacity")
+    animation = QPropertyAnimation(widget, QByteArray(b"windowOpacity"))
     animation.setDuration(duration)
     animation.setStartValue(target_start)
     animation.setEndValue(target_end)
-    animation.setEasingCurve(QEasingCurve.InOutQuad)
+    animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
     return animation
 
 
 def create_animation_group(animations: Iterable):
-    """ 创建动画组
+    """创建动画组
     Args:
         animations(Iterable): 动画组成员
 

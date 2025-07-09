@@ -5,10 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "pyside6==6.6.3",
+    "pyside6==6.9",
 ]
 
 [dependency-groups]
 dev = [
     "nuitka>=2.7.12",
 ]
+
+[tool.ruff]
+line-length = 88
+select = ["C", "E", "F", "W"]
+ignore = ["E501", "C901"]
+extend-select = ["I"]
+extend-exclude = ["views/ui_designs"]

@@ -1,14 +1,22 @@
 # -*- coding: utf-8 -*-
-# Name:         login_window.py
-# Author:       小菜
-# Date:         2024/4/01 00:00
-# Description:
-
 import sys
 
-from PySide6.QtCore import (Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve, Signal)
-from PySide6.QtGui import (QColor, QPainter, QFont, QPen, QIcon)
-from PySide6.QtWidgets import (QMainWindow, QGraphicsDropShadowEffect, QWidget, QApplication)
+from PySide6.QtCore import (
+    QByteArray,
+    QEasingCurve,
+    QPropertyAnimation,
+    QRect,
+    Qt,
+    QTimer,
+    Signal,
+)
+from PySide6.QtGui import QColor, QFont, QIcon, QPainter, QPen
+from PySide6.QtWidgets import (
+    QApplication,
+    QGraphicsDropShadowEffect,
+    QMainWindow,
+    QWidget,
+)
 
 from views.ui_components import apply_shadow_effect
 from views.ui_designs import Ui_Login
@@ -25,16 +33,16 @@ class LoginWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # REMOVE TITLE BAR
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
 
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
         # IMPORT CIRCULAR PROGRESS
         self.progress = CircularProgress()
-        self.progress.width = 240
-        self.progress.height = 240
+        self.progress.width_v = 240
+        self.progress.height_v = 240
         self.progress.value = 0
-        self.progress.setFixedSize(self.progress.width, self.progress.height)
+        self.progress.setFixedSize(self.progress.width_v, self.progress.height_v)
         self.progress.font_size = 20
         self.progress.add_shadow()
         self.progress.progress_width = 4
@@ -74,7 +82,7 @@ class LoginWindow(QMainWindow):
         QTimer.singleShot(300, lambda: self.move(actual_pos.x(), actual_pos.y()))
 
     # UPDATE PROGRESS BAR
-    def update(self):
+    def update(self):  # type: ignore
         # global counter
 
         # SET VALUE TO PROGRESS BAR
@@ -91,11 +99,11 @@ class LoginWindow(QMainWindow):
     # START ANIMATION TO LOGIN
     def animation_login(self):
         # ANIMATION
-        self.animation = QPropertyAnimation(self.ui.frame_widgets, b"geometry")
+        self.animation = QPropertyAnimation(self.ui.frame_widgets, QByteArray(b"geometry"))
         self.animation.setDuration(1500)
         self.animation.setStartValue(QRect(0, 70, self.ui.frame_widgets.width(), self.ui.frame_widgets.height()))
         self.animation.setEndValue(QRect(0, -380, self.ui.frame_widgets.width(), self.ui.frame_widgets.height()))
-        self.animation.setEasingCurve(QEasingCurve.InOutQuart)
+        self.animation.setEasingCurve(QEasingCurve.Type.InOutQuart)
         self.animation.start()
         # 登录成功，发射信号
         self.animation.finished.connect(lambda: QTimer.singleShot(800, self.login_successful.emit))
@@ -109,24 +117,24 @@ class CircularProgress(QWidget):
 
         # CUSTOM PROPERTIES
         self.value = 0
-        self.width = 200
-        self.height = 200
+        self.width_v = 200
+        self.height_v = 200
         self.progress_width = 10
         self.progress_rounded_cap = True
         self.max_value = 100
-        self.progress_color = 0xff79c6
+        self.progress_color = QColor("#ff79c6")
         # Text
         self.enable_text = True
         self.font_family = "Segoe UI"
         self.font_size = 12
         self.suffix = "%"
-        self.text_color = 0xff79c6
+        self.text_color = QColor("#ff79c6")
         # BG
         self.enable_bg = True
-        self.bg_color = 0x44475a
+        self.bg_color = QColor("#44475a")
 
         # SET DEFAULT SIZE WITHOUT LAYOUT
-        self.resize(self.width, self.height)
+        self.resize(self.width_v, self.height_v)
 
     # ADD DROP_SHADOW
     def add_shadow(self):
@@ -140,20 +148,20 @@ class CircularProgress(QWidget):
     # PAINT EVENT (DESIGN YOUR CIRCULAR PROGRESS HERE)
     def paintEvent(self, e):
         # SET PROGRESS PARAMETERS
-        width = self.width - self.progress_width
-        height = self.height - self.progress_width
-        margin = self.progress_width / 2
-        value = self.value * 360 / self.max_value
+        width = self.width_v - self.progress_width
+        height = self.height_v - self.progress_width
+        margin = int(self.progress_width / 2)
+        value = int(self.value * 360 / self.max_value)
 
         # PAINTER
         paint = QPainter()
         paint.begin(self)
-        paint.setRenderHint(QPainter.Antialiasing)  # remove pixelated edges
+        paint.setRenderHint(QPainter.RenderHint.Antialiasing)  # remove pixelated edges
         paint.setFont(QFont(self.font_family, self.font_size))
 
         # CREATE RECTANGLE
-        rect = QRect(0, 0, self.width, self.height)
-        paint.setPen(Qt.NoPen)
+        rect = QRect(0, 0, self.width_v, self.height_v)
+        paint.setPen(Qt.PenStyle.NoPen)
         paint.drawRect(rect)
 
         # PEN
@@ -161,7 +169,7 @@ class CircularProgress(QWidget):
         pen.setWidth(self.progress_width)
         # Set Round Cap
         if self.progress_rounded_cap:
-            pen.setCapStyle(Qt.RoundCap)
+            pen.setCapStyle(Qt.PenCapStyle.RoundCap)
 
         # ENABLE BG
         if self.enable_bg:
@@ -178,7 +186,7 @@ class CircularProgress(QWidget):
         if self.enable_text:
             pen.setColor(QColor(self.text_color))
             paint.setPen(pen)
-            paint.drawText(rect, Qt.AlignCenter, f"{self.value}{self.suffix}")
+            paint.drawText(rect, Qt.AlignmentFlag.AlignCenter, f"{self.value}{self.suffix}")
 
         # END
         paint.end()
